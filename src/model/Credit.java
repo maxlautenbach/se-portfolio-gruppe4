@@ -3,10 +3,10 @@ package model;
 public class Credit{
 
     private float loanAmount;
-    private float interestRate;
-    private String interestPeriod;
-    private int period;
-    private String periodUoM;
+    private final float interestRate;
+    private final String interestPeriod;
+    private final int period;
+    private final String periodUoM;
     private float repaymentAmount;
     private String repaymentPeriod;
     private String creditType;
@@ -29,6 +29,7 @@ public class Credit{
         int interestPeriod = 0;
         int repaymentPeriod = 0;
         int period = 0;
+        float rate = this.interestRate;
         switch (this.interestPeriod){
             case "monthly":
                 if(this.repaymentPeriod.equals("yearly")){
@@ -45,7 +46,7 @@ public class Credit{
             case "monthly":
                 if(interestPeriod == 12){
                     interestPeriod = 1;
-                    float rate =  Math.round(Math.pow(this.interestRate, 1.0 / 12.0));
+                    rate = (float) (100 * ((Math.pow(1 + this.interestRate / 100, 1.0 / 12.0)) - 1));
                 }
                 repaymentPeriod = 1;
                 break;
@@ -64,7 +65,7 @@ public class Credit{
 
         for(int i = 1; i <= period; i++){
             if(i % interestPeriod == 0){
-                this.endAmount += (this.loanAmount * interestRate);
+                this.endAmount += (this.loanAmount * rate);
             }
             if(i % repaymentPeriod == 0){
                 this.loanAmount -= repaymentAmount;
