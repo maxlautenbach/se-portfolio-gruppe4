@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Credit{
 
     private float loanAmount;
@@ -73,6 +75,10 @@ public class Credit{
         }
 
         return this.endAmount;
+    }
+
+    public void getJSON(){
+        String json = new ObjectMapper().writeValueAsString(this);
     }
 
 }
