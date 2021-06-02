@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Credit{
@@ -31,6 +32,7 @@ public class Credit{
         int interestPeriod = 0;
         int repaymentPeriod = 0;
         int period = 0;
+        float loanAmount = this.loanAmount;
         float rate = this.interestRate;
         switch (this.interestPeriod){
             case "monthly":
@@ -57,20 +59,20 @@ public class Credit{
                 break;
         }
         switch (this.periodUoM){
-            case "monthly":
+            case "months":
                 period = this.period;
                 break;
-            case "yearly":
+            case "years":
                 period = this.period * 12;
                 break;
         }
 
         for(int i = 1; i <= period; i++){
             if(i % interestPeriod == 0){
-                this.endAmount += (this.loanAmount * rate);
+                this.endAmount += (loanAmount * rate);
             }
             if(i % repaymentPeriod == 0){
-                this.loanAmount -= repaymentAmount;
+                loanAmount -= repaymentAmount;
             }
         }
 
@@ -78,7 +80,47 @@ public class Credit{
     }
 
     public void getJSON(){
-        String json = new ObjectMapper().writeValueAsString(this);
+        try {
+            String json = new ObjectMapper().writeValueAsString(this);
+            System.out.println(json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 
+    public float getLoanAmount() {
+        return loanAmount;
+    }
+
+    public float getInterestRate() {
+        return interestRate;
+    }
+
+    public String getInterestPeriod() {
+        return interestPeriod;
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public String getPeriodUoM() {
+        return periodUoM;
+    }
+
+    public float getRepaymentAmount() {
+        return repaymentAmount;
+    }
+
+    public String getRepaymentPeriod() {
+        return repaymentPeriod;
+    }
+
+    public String getCreditType() {
+        return creditType;
+    }
+
+    public float getEndAmount() {
+        return endAmount;
+    }
 }
