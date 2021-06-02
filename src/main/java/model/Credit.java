@@ -6,17 +6,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Credit{
 
     private float loanAmount;
-    private final float interestRate;
-    private final String interestPeriod;
-    private final int period;
-    private final String periodUoM;
+    private float interestRate;
+    private String interestPeriod;
+    private int period;
+    private String periodUoM;
     private float repaymentAmount;
     private String repaymentPeriod;
     private String creditType;
     private float endAmount;
 
+    public Credit(){
 
-    public Credit(float loanAmount, float interestRate, String interestPeriod, int period, String periodUoM, float repaymentAmount, String repaymentPeriod, String creditType) {
+    }
+
+    public void setAllAtributes(float loanAmount, float interestRate, String interestPeriod, int period, String periodUoM, float repaymentAmount, String repaymentPeriod, String creditType) {
         this.loanAmount = loanAmount;
         this.endAmount = loanAmount;
         this.interestRate = interestRate;
@@ -28,64 +31,8 @@ public class Credit{
         this.creditType = creditType;
     }
 
-    public float calculateEndAmount(){
-        int interestPeriod = 0;
-        int repaymentPeriod = 0;
-        int period = 0;
-        float loanAmount = this.loanAmount;
-        float rate = this.interestRate;
-        switch (this.interestPeriod){
-            case "monthly":
-                if(this.repaymentPeriod.equals("yearly")){
-                    this.repaymentPeriod = "monthly";
-                    this.repaymentAmount /= 12.0;
-                }
-                interestPeriod = 1;
-                break;
-            case "yearly":
-                interestPeriod = 12;
-                break;
-        }
-        switch (this.repaymentPeriod){
-            case "monthly":
-                if(interestPeriod == 12){
-                    interestPeriod = 1;
-                    rate = (float) (100 * ((Math.pow(1 + this.interestRate / 100, 1.0 / 12.0)) - 1));
-                }
-                repaymentPeriod = 1;
-                break;
-            case "yearly":
-                repaymentPeriod = 12;
-                break;
-        }
-        switch (this.periodUoM){
-            case "months":
-                period = this.period;
-                break;
-            case "years":
-                period = this.period * 12;
-                break;
-        }
-
-        for(int i = 1; i <= period; i++){
-            if(i % interestPeriod == 0){
-                this.endAmount += (loanAmount * rate);
-            }
-            if(i % repaymentPeriod == 0){
-                loanAmount -= repaymentAmount;
-            }
-        }
-
-        return this.endAmount;
-    }
-
-    public void getJSON(){
-        try {
-            String json = new ObjectMapper().writeValueAsString(this);
-            System.out.println(json);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+    public void setEndAmount(float endAmount) {
+        this.endAmount = endAmount;
     }
 
     public float getLoanAmount() {
