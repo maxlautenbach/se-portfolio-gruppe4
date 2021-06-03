@@ -8,5 +8,6 @@ public class RunApp{
         Controller controller = Controller.getInstance();
         controller.createObject(1500,0.05f,"yearly",3, "years", 500, "yearly", "");
         controller.saveObject();
+        controller.loadObjectById(1);
     }
 }

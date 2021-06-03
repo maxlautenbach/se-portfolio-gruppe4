@@ -2,7 +2,6 @@ package controller;
 
 //Import models and views here
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Credit;
@@ -12,11 +11,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import view.View;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Controller{
     private static Controller instance;
@@ -30,30 +28,17 @@ public class Controller{
 
     }
 
-    private static void initNextId() {
+    private static void initNextId(){
         try {
-            FileReader reader = new FileReader("prog.log");
-            nextId += Integer.parseInt(String.valueOf(reader.read()));
-        } catch (FileNotFoundException e) {
-            try {
-                FileWriter file = new FileWriter("prog.log");
-                nextId = 1;
-                file.write(1);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveNextId(){
-        FileWriter file = null;
-        try {
-            file = new FileWriter("prog.log");
-            file.write(nextId);
-        } catch (IOException e) {
-            e.printStackTrace();
+            FileReader file = new FileReader("credits.json");
+            JSONParser jsonParser = new JSONParser();
+            JSONArray creditList = (JSONArray) jsonParser.parse(file);
+            JSONObject lastAddedCredit = (JSONObject) creditList.get(creditList.size()-1);
+            ArrayList<Integer> keySet = new ArrayList<Integer>(lastAddedCredit.keySet());
+            nextId = Integer.parseInt(String.valueOf(keySet.get(0)));
+            nextId += 1;
+        } catch (ParseException | IOException e) {
+            nextId = 1;
         }
     }
 
@@ -78,7 +63,7 @@ public class Controller{
             FileReader reader = new FileReader("credits.json");
             creditList = (JSONArray) jsonParser.parse(reader);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("credits.json created");
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -86,19 +71,34 @@ public class Controller{
         }
         try (FileWriter file = new FileWriter("credits.json")) {
             //We can write any JSONArray or JSONObject instance to the file
-            if (creditList == null){
+            if (creditList == null) {
                 creditList = new JSONArray();
-                JSONObject object = (JSONObject) jsonParser.parse(this.convertObjectToJSON());
-                JSONObject creditJSON = new JSONObject();
-                creditJSON.put(nextId, object);
-                creditList.add(creditJSON);
-                nextId += 1;
-                saveNextId();
             }
+            JSONObject object = (JSONObject) jsonParser.parse(this.convertObjectToJSON());
+            JSONObject creditJSON = new JSONObject();
+            creditJSON.put(nextId, object);
+            creditList.add(creditJSON);
+            nextId += 1;
             file.write(creditList.toJSONString());
             file.flush();
 
         } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadObjectById(int id){
+        try {
+            FileReader fileReader = new FileReader("credits.json");
+            JSONParser jsonParser = new JSONParser();
+            JSONArray creditList = (JSONArray) jsonParser.parse(fileReader);
+            JSONObject credit = (JSONObject) creditList.get(id-1);
+            System.out.println("");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
