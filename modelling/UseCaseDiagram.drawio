@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-06-01T17:12:58.430Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15" etag="K-sxpszUGV_S1nhrXwhK" version="14.7.3" type="github">
+<mxfile host="app.diagrams.net" modified="2021-06-04T09:12:28.525Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.1 Safari/605.1.15" etag="GJZjRm5SHVhCRusyH3wD" version="14.7.6" type="github">
   <diagram id="IgLJb1cPBx3nuay1mZ5Q" name="Page-1">
-    <mxGraphModel dx="946" dy="645" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1426" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -31,7 +31,7 @@
             <mxPoint x="350" y="150" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="_KpY3GYrZ5TwgtVgF2E3-17" value="XML-Datei generieren" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="_KpY3GYrZ5TwgtVgF2E3-17" value="JSON-Datei generieren" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="440" y="280" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="_KpY3GYrZ5TwgtVgF2E3-18" value="" style="endArrow=block;endSize=16;endFill=0;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="_KpY3GYrZ5TwgtVgF2E3-17" target="_KpY3GYrZ5TwgtVgF2E3-12" edge="1">
@@ -57,7 +57,7 @@
             <mxPoint x="560" y="150" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="_KpY3GYrZ5TwgtVgF2E3-22" value="Liste als XLM abspeichern" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="_KpY3GYrZ5TwgtVgF2E3-22" value="Liste als JSON abspeichern" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="590" y="140" width="120" height="80" as="geometry" />
         </mxCell>
       </root>
