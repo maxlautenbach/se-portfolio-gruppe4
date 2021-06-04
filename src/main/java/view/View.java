@@ -79,9 +79,13 @@ public class View extends JFrame {
         centerPanel = new JPanel();
         bottomPanel = new JPanel();
         betragField = new JTextField();
+        betragField.setText(String.valueOf(controller.getCredit().getLoanAmount()));
         zinssatzField = new JTextField();
+        zinssatzField.setText(String.valueOf(controller.getCredit().getInterestRate()));
         laufzeitField = new JTextField();
+        laufzeitField.setText(String.valueOf(controller.getCredit().getRepaymentPeriod()));
         zinsField = new JTextField();
+        zinsField.setText(String.valueOf(controller.getCredit().getLoanAmount()));
         betragLabel = new JLabel("Kreditbetrag");
         zinssatzLabel = new JLabel("Zinssatz");
         laufzeitLabel = new JLabel("Laufzeit");
