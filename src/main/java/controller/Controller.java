@@ -20,17 +20,25 @@ public class Controller{
     private static Controller instance;
 
     private View view;
-    private Credit credit = new Credit();
+    private Credit credit;
     private HashMap<Integer, Float> creditMap;
     private static int nextId;
 
     private Controller() {
-
+        credit = new Credit();
     }
 
     public void addWindow(){
         view = View.getInstance(this);
         view.setVisible(true);
+    }
+
+    public View getView() {
+        return view;
+    }
+
+    public Credit getCredit() {
+        return credit;
     }
 
     private static void initNextId(){

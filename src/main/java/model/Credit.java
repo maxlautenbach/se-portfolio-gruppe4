@@ -31,7 +31,7 @@ public class Credit{
         this.creditType = creditType;
     }
 
-    void calculateEndAmount(){
+    public void calculateEndAmount(){
         int interestPeriod = 0;
         int repaymentPeriod = 0;
         float endAmount = 0;
