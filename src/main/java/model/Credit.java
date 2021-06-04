@@ -31,6 +31,60 @@ public class Credit{
         this.creditType = creditType;
     }
 
+    void calculateEndAmount(){
+        int interestPeriod = 0;
+        int repaymentPeriod = 0;
+        float endAmount = 0;
+        String repaymentPeriodInWords = this.getRepaymentPeriod();
+        float repaymentAmount = this.getRepaymentAmount();
+        int period = 0;
+        float loanAmount = this.getLoanAmount();
+        float rate = this.getInterestRate();
+        switch (this.getInterestPeriod()){
+            case "monthly":
+                if(this.getRepaymentPeriod().equals("yearly")){
+                    repaymentPeriodInWords = "monthly";
+                    repaymentAmount /= 12.0;
+                }
+                interestPeriod = 1;
+                break;
+            case "yearly":
+                interestPeriod = 12;
+                break;
+        }
+        switch (repaymentPeriodInWords){
+            case "monthly":
+                if(interestPeriod == 12){
+                    interestPeriod = 1;
+                    rate = (float) (100 * ((Math.pow(1 + this.getInterestRate() / 100, 1.0 / 12.0)) - 1));
+                }
+                repaymentPeriod = 1;
+                break;
+            case "yearly":
+                repaymentPeriod = 12;
+                break;
+        }
+        switch (this.getPeriodUoM()){
+            case "months":
+                period = this.getPeriod();
+                break;
+            case "years":
+                period = this.getPeriod() * 12;
+                break;
+        }
+
+        for(int i = 1; i <= period; i++){
+            if(i % interestPeriod == 0){
+                endAmount += (loanAmount * rate);
+            }
+            if(i % repaymentPeriod == 0){
+                loanAmount -= repaymentAmount;
+            }
+        }
+
+        this.setEndAmount(endAmount);
+    }
+
     public void setEndAmount(float endAmount) {
         this.endAmount = endAmount;
     }
