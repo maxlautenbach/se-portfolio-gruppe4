@@ -28,6 +28,11 @@ public class Controller{
 
     }
 
+    public void addWindow(){
+        view = View.getInstance(this);
+        view.setVisible(true);
+    }
+
     private static void initNextId(){
         try {
             FileReader file = new FileReader("credits.json");
@@ -93,7 +98,7 @@ public class Controller{
             JSONParser jsonParser = new JSONParser();
             JSONArray creditList = (JSONArray) jsonParser.parse(fileReader);
             JSONObject credit = (JSONObject) creditList.get(id-1);
-            this.credit = new ObjectMapper().readValue(credit.toJSONString(), Credit.class);
+            //this.credit = new ObjectMapper().readValue(credit.toJSONString(), Credit.class);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (ParseException e) {
