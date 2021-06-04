@@ -93,7 +93,7 @@ public class Controller{
             JSONParser jsonParser = new JSONParser();
             JSONArray creditList = (JSONArray) jsonParser.parse(fileReader);
             JSONObject credit = (JSONObject) creditList.get(id-1);
-            System.out.println("");
+            this.credit = new ObjectMapper().readValue(credit.toJSONString(), Credit.class);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (ParseException e) {
