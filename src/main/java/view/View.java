@@ -3,6 +3,7 @@ package view;
 import com.formdev.flatlaf.FlatLightLaf;
 import controller.Controller;
 import view.listeners.ButtonListener;
+import view.listeners.TypeSelectionListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,12 +14,25 @@ public class View extends JFrame {
     private static View instance;
 
     private Controller controller;
-    private JPanel centerPanel, bottomPanel;
+    private JPanel topPanel, centerPanel, bottomPanel;
     private BorderLayout outerLayout;
-    private GroupLayout innerLayout;
-    private JTextField betragField, zinssatzField, laufzeitField, zinsField;
-    private JLabel betragLabel, zinssatzLabel, laufzeitLabel, zinsLabel;
+    private GroupLayout centerLayout;
+    private JLabel title,
+            amountLabel, interestRateLabel, termLabel,
+            amountSymbol, interestRateSymbol, termSymbol,
+            paymentPeriodLabel,
+            interestLabel, interestSymbol, interestResult;
+    private JTextField amountField, interestRateField, termField;
+    private JComboBox creditTypeSelection;
+    private JRadioButton periodMonth, periodYear;
+    private ButtonGroup periodTimeSelection;
+    private JList savedCreditList;
+    private JScrollPane creditListScrollPane;
+    private JSeparator resultSeparator;
     private JButton saveButton, cancelButton, calculateButton;
+    private int height, width;
+
+
 
     public JButton getSaveButton() {
         return saveButton;
@@ -55,7 +69,9 @@ public class View extends JFrame {
     }
 
     public void onCancelClick() {
-
+        amountField.setText("");
+        interestRateField.setText("");
+        termField.setText("");
     }
 
     private void initalize() {
@@ -67,32 +83,65 @@ public class View extends JFrame {
             System.err.println( "Failed to initialize LaF" );
         }
 
+        height = 600;
+        width = 700;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Credit Calculator");
-        setSize(700, 600);
+        setSize(width,height);
         setLocation(300,200);
 
         /*
         * Ininalisieren der Ui Elemente
         * */
 
+        topPanel = new JPanel();
         centerPanel = new JPanel();
         bottomPanel = new JPanel();
-        betragField = new JTextField();
-        betragField.setText(String.valueOf(controller.getCredit().getLoanAmount()));
-        zinssatzField = new JTextField();
-        zinssatzField.setText(String.valueOf(controller.getCredit().getInterestRate()));
-        laufzeitField = new JTextField();
-        laufzeitField.setText(String.valueOf(controller.getCredit().getRepaymentPeriod()));
-        zinsField = new JTextField();
-        zinsField.setText(String.valueOf(controller.getCredit().getLoanAmount()));
-        betragLabel = new JLabel("Kreditbetrag");
-        zinssatzLabel = new JLabel("Zinssatz");
-        laufzeitLabel = new JLabel("Laufzeit");
-        zinsLabel = new JLabel("Zinsen");
+
+        title = new JLabel("Kredit 1");
+        amountLabel = new JLabel("Kreditbetrag");
+        interestRateLabel = new JLabel("Zinssatz");
+        termLabel = new JLabel("Laufzeit");
+        interestLabel = new JLabel("Zinsen");
+        amountSymbol = new JLabel("€");
+        interestRateSymbol = new JLabel("%");
+        termSymbol = new JLabel("M");
+        paymentPeriodLabel = new JLabel("Zahlungsryhtmus");
+        interestSymbol = new JLabel("€");
+        resultSeparator = new JSeparator();
         cancelButton = new JButton("Abbrechen");
         saveButton = new JButton("Speichern");
         calculateButton = new JButton("Berechnen");
+
+        amountField = new JTextField();
+        amountField.setText(String.valueOf(controller.getCredit().getLoanAmount()));
+        interestRateField = new JTextField();
+        interestRateField.setText(String.valueOf(controller.getCredit().getInterestRate()));
+        termField = new JTextField();
+        termField.setText(String.valueOf(controller.getCredit().getRepaymentPeriod()));
+        interestResult = new JLabel();
+        interestResult.setText(String.valueOf(controller.getCredit().getLoanAmount()));
+
+        creditTypeSelection = new JComboBox();
+        creditTypeSelection.addItem("type1");
+        creditTypeSelection.addItem("type2");
+        creditTypeSelection.addItem("type3");
+        creditTypeSelection.setMaximumSize(new Dimension(width*3/4,20));
+        creditTypeSelection.addActionListener(new TypeSelectionListener(this));
+
+        periodMonth = new JRadioButton("monatlich");
+        periodYear = new JRadioButton("jährlich");
+        periodTimeSelection = new ButtonGroup();
+        periodTimeSelection.add(periodMonth);
+        periodTimeSelection.add(periodYear);
+
+
+        savedCreditList = new JList(new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"});
+        creditListScrollPane = new JScrollPane();
+        creditListScrollPane.setViewportView(savedCreditList);
+        creditListScrollPane.setMaximumSize(new Dimension(width/4,height));
+        savedCreditList.setToolTipText("Wähle einen gespeicherten Kredit");
+        savedCreditList.setLayoutOrientation(JList.VERTICAL);
 
         /*
         * Erstellen und formatieren der Layouts
@@ -102,8 +151,8 @@ public class View extends JFrame {
         outerLayout.setHgap(10);
         getContentPane().setLayout(outerLayout);
 
-
-        add(new JLabel("Kredit 1"), BorderLayout.NORTH);
+        topPanel.add(title, SwingConstants.CENTER);
+        add(topPanel, BorderLayout.NORTH);
 
         calculateButton.addActionListener(new ButtonListener(this));
         bottomPanel.add(calculateButton);
@@ -113,47 +162,83 @@ public class View extends JFrame {
         bottomPanel.add(cancelButton);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        innerLayout = new GroupLayout(centerPanel);
-        centerPanel.setLayout(innerLayout);
-        innerLayout.setAutoCreateGaps(true);
-        innerLayout.setAutoCreateContainerGaps(true);
-            innerLayout.setHorizontalGroup(
-                    innerLayout.createSequentialGroup()
-                            .addGroup(innerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addComponent(betragLabel)
-                                    .addComponent(zinssatzLabel)
-                                    .addComponent(laufzeitLabel)
-                                    .addComponent(zinsLabel)
+        centerLayout = new GroupLayout(centerPanel);
+        centerPanel.setLayout(centerLayout);
+        centerLayout.setAutoCreateGaps(true);
+        centerLayout.setAutoCreateContainerGaps(true);
+
+        centerLayout.setHorizontalGroup(centerLayout.createSequentialGroup()
+            .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(centerLayout.createSequentialGroup()
+                    .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(creditTypeSelection)
+                        .addGroup(centerLayout.createSequentialGroup()
+                            .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(amountLabel)
+                                .addComponent(interestRateLabel)
+                                .addComponent(termLabel)
+                                .addComponent(paymentPeriodLabel)
+                                .addComponent(interestLabel)
                             )
-                            .addGroup(innerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addComponent(betragField)
-                                    .addComponent(zinssatzField)
-                                    .addComponent(laufzeitField)
-                                    .addComponent(zinsField)
+                            .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addComponent(amountField)
+                                .addComponent(interestRateField)
+                                .addComponent(termField)
+                                .addComponent(periodMonth)
+                                .addComponent(periodYear)
+                                .addComponent(interestResult)
                             )
-            );
-            innerLayout.setVerticalGroup(
-                    innerLayout.createSequentialGroup()
-                            .addGroup(innerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                    .addComponent(betragLabel)
-                                    .addComponent(betragField)
-                            )
-                            .addGroup(innerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                    .addComponent(zinssatzLabel)
-                                    .addComponent(zinssatzField)
-                            )
-                            .addGroup(innerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                    .addComponent(laufzeitLabel)
-                                    .addComponent(laufzeitField)
-                            )
-                            .addGroup(innerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                    .addComponent(zinsLabel)
-                                    .addComponent(zinsField)
-                            )
-            );
+                        )
+                    )
+                    .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(amountSymbol)
+                        .addComponent(interestRateSymbol)
+                        .addComponent(termSymbol)
+                        .addComponent(interestSymbol)
+                    )
+                )
+                .addComponent(resultSeparator)
+            )
+            .addComponent(creditListScrollPane)
+        );
+        centerLayout.setVerticalGroup(centerLayout.createSequentialGroup()
+            .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(centerLayout.createSequentialGroup()
+                    .addComponent(creditTypeSelection)
+                    .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(amountLabel)
+                        .addComponent(amountField)
+                        .addComponent(amountSymbol)
+                    )
+                    .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(interestRateLabel)
+                        .addComponent(interestRateField)
+                        .addComponent(interestRateSymbol)
+                    )
+                    .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(termLabel)
+                        .addComponent(termField)
+                        .addComponent(termSymbol)
+                    )
+                    .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(paymentPeriodLabel)
+                        .addGroup(centerLayout.createSequentialGroup()
+                            .addComponent(periodMonth)
+                            .addComponent(periodYear)
+                        )
+                    )
+                    .addComponent(resultSeparator)
+                    .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(interestLabel)
+                        .addComponent(interestResult)
+                        .addComponent(interestSymbol)
+                    )
+                )
+                .addComponent(creditListScrollPane)
+            )
+        );
+
         add(centerPanel, BorderLayout.CENTER);
-
-
 
     }
 
