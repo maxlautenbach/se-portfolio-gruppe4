@@ -63,7 +63,7 @@ public class View extends JFrame {
                 Integer.parseInt(termField.getText()),
                 getSelectedButtonText(periodTimeSelection),
                 Credit.creditTypes.valueOf(creditTypeSelection.getSelectedItem().toString().toUpperCase(Locale.ROOT)));
-        controller.getCredit().calculateEndAmount();
+        controller.calculateEndAmount();
         interestResult.setText(String.valueOf(controller.getCredit().getInterestSum()));
     }
 
