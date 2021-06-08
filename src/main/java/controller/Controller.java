@@ -40,6 +40,10 @@ public class Controller{
         return credit;
     }
 
+    public void setCredit(Credit credit) {
+        this.credit = credit;
+    }
+
     private static void initNextId(){
         try {
             FileReader file = new FileReader("credits.json");
@@ -135,9 +139,9 @@ public class Controller{
             JSONArray creditList = (JSONArray) jsonParser.parse(fileReader);
             int length = creditList.size();
             credits = new Credit[length];
-            for (int i = 1; i <= length; i++){
+            for (int i = 0; i < length; i++){
                 JSONObject credit = (JSONObject) creditList.get(i);
-                credits[i] = new ObjectMapper().readValue(credit.get(String.valueOf(i)).toString(), Credit.class);
+                credits[i] = new ObjectMapper().readValue(credit.get(String.valueOf(i+1)).toString(), Credit.class);
             }
         } catch (ParseException e) {
             e.printStackTrace();

@@ -86,6 +86,18 @@ public class View extends JFrame {
         termField.setText("");
     }
 
+    public void getValuesFromCredit(){
+        creditTypeSelection.setSelectedItem(controller.getCredit().getCreditType());
+        amountField.setText(String.valueOf( controller.getCredit().getLoanAmount()));
+        interestRateField.setText(String.valueOf( controller.getCredit().getInterestRate()));
+        termField.setText(String.valueOf( controller.getCredit().getInterestPeriod()));
+        switch (controller.getCredit().getPaymentRhythm()){
+            case "monatlich" : periodTimeSelection.setSelected(periodMonth.getModel(),true);break;
+            case "jährlich" : periodTimeSelection.setSelected(periodYear.getModel(),true);break;
+        }
+
+    }
+
     private void initalize() {
 
         try {
@@ -147,14 +159,18 @@ public class View extends JFrame {
         periodTimeSelection.add(periodMonth);
         periodTimeSelection.add(periodYear);
 
-
-        savedCreditList = new JList( new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"});
+        //;
+        //new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"}
+        if(controller.loadAllObjects() != null){
+        savedCreditList = new JList( controller.loadAllObjects());}else{
+            savedCreditList = new JList();
+        }
         creditListScrollPane = new JScrollPane();
         creditListScrollPane.setViewportView(savedCreditList);
         creditListScrollPane.setMaximumSize(new Dimension(width/4,height));
         savedCreditList.setToolTipText("Wähle einen gespeicherten Kredit");
         savedCreditList.setLayoutOrientation(JList.VERTICAL);
-        savedCreditList.addListSelectionListener(new CreditListListener(this));
+        savedCreditList.addListSelectionListener(new CreditListListener(this.controller));
 
         /*
         * Erstellen und formatieren der Layouts

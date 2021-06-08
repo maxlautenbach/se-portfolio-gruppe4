@@ -1,5 +1,7 @@
 package view.listeners;
 
+import controller.Controller;
+import model.Credit;
 import view.View;
 
 import javax.swing.event.ListSelectionEvent;
@@ -8,14 +10,15 @@ import java.awt.event.ActionEvent;
 
 public class CreditListListener implements ListSelectionListener {
 
-    private View view;
+    private Controller controller;
 
-    public CreditListListener(View view){
-        this.view = view;
+    public CreditListListener(Controller controller){
+        this.controller = controller;
     }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        view.getSavedCreditList().getSelectedValue();
+         controller.setCredit((Credit) controller.getView().getSavedCreditList().getSelectedValue());
+         controller.getView().getValuesFromCredit();
     }
 }

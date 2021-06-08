@@ -20,6 +20,11 @@ public class Credit{
 
     public Credit(){
     }
+    @Override
+    public String toString(){
+        return creditType + " " + loanAmount;
+    }
+
     public void setParameters(double loanAmount, String periodUoM, double interestRate, int interestPeriod, String paymentRhythm, creditTypes creditType) {
         this.loanAmount = loanAmount;
         this.periodUoM = periodUoM;
