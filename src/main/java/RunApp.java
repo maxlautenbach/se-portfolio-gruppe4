@@ -9,7 +9,7 @@ public class RunApp{
     public static void main(String[] args){
         Controller controller = Controller.getInstance();
         controller.createObject(1500,"",5,21, "monatlich", FAELLIGKEITSKREDIT);
-        controller.getCredit().calculateEndAmount();
+        controller.calculateEndAmount();
         controller.loadObjectById(1);
         controller.addWindow();
         controller.saveObject();

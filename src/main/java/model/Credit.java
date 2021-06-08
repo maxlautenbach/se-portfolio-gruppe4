@@ -1,7 +1,5 @@
 package model;
 
-import java.lang.Math;
-
 public class Credit{
     private double loanAmount; // Kreditbetrag
     private double interestRate; //Zinssatz
@@ -30,50 +28,7 @@ public class Credit{
         this.paymentRhythm = paymentRhythm;
         this.creditType = creditType;
     }
-    public void calculateEndAmount() {
-        interestSum = 0;
-        if(paymentRhythm.equals("monatlich")) {
-            actInterestRate = (Math.pow(1 + interestRate / 100.0, 1.0 / 12.0) - 1);
-        }
-        else {actInterestRate = interestRate / 100.0;}
-        switch (creditType) {
-            case FAELLIGKEITSKREDIT:
-                calculateMaturityCredit();
-                break;
-            case ANNUITAETENKREDIT:
-                calculateAnnuityCredit();
-                break;
-            case ABZAHLUNGSKREDIT:
-                calculateInstallmentCredit();
-                break;
-        }
-    }
-    private void calculateMaturityCredit() {
-        interestSum = loanAmount * interestRate * interestPeriod;
-        repaymentAmount = loanAmount + interestSum;
-    }
-    private void calculateAnnuityCredit() {
-        double periodFactor = Math.pow(1+interestRate, interestPeriod); //Exponentialrechung
-        annuity = loanAmount * (periodFactor * interestRate)/(periodFactor-1);
-        remainingDept = loanAmount;
-        for (int i = 0; i<interestPeriod; i++){
-            interest = loanAmount * interestRate;
-            interestSum = interestSum + interest;
-            repayment = annuity - interest;
-            remainingDept = remainingDept-repayment;
-        }
-        repaymentAmount = interestSum + loanAmount;
-    }
-    private void calculateInstallmentCredit() {
-        repayment = loanAmount / interestPeriod;
-        remainingDept = loanAmount;
-        for (int i = 0; i<interestPeriod; i++) {
-            interest = remainingDept * interestRate;
-            interestSum = interestSum + interest;
-            remainingDept = remainingDept - repayment;
-        }
-        repaymentAmount = interestSum + loanAmount;
-    }
+
     public double getLoanAmount() {
         return loanAmount;
     }
