@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import controller.Controller;
 import model.Credit;
 import view.listeners.ButtonListener;
+import view.listeners.CreditListListener;
 import view.listeners.RadioButtonListener;
 import view.listeners.TypeSelectionListener;
 
@@ -53,7 +54,8 @@ public class View extends JFrame {
     }
 
     public void onSaveClick() {
-
+        onCalculateClick();
+        controller.saveObject();
     }
 
     public void onCalculateClick() {
@@ -93,8 +95,8 @@ public class View extends JFrame {
             System.err.println( "Failed to initialize LaF" );
         }
 
-        height = 600;
-        width = 700;
+        height = 350;
+        width = 600;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Credit Calculator");
         setSize(width,height);
@@ -145,12 +147,14 @@ public class View extends JFrame {
         periodTimeSelection.add(periodMonth);
         periodTimeSelection.add(periodYear);
 
+
         savedCreditList = new JList( new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"});
         creditListScrollPane = new JScrollPane();
         creditListScrollPane.setViewportView(savedCreditList);
         creditListScrollPane.setMaximumSize(new Dimension(width/4,height));
         savedCreditList.setToolTipText("Wähle einen gespeicherten Kredit");
         savedCreditList.setLayoutOrientation(JList.VERTICAL);
+        savedCreditList.addListSelectionListener(new CreditListListener(this));
 
         /*
         * Erstellen und formatieren der Layouts
@@ -258,19 +262,18 @@ public class View extends JFrame {
     public JButton getSaveButton() {
         return saveButton;
     }
-
     public JButton getCancelButton() {
         return cancelButton;
     }
-
     public JButton getCalculateButton() {
         return calculateButton;
     }
-
     public ButtonGroup getPeriodTimeSelection() {
         return periodTimeSelection;
     }
-
+    public JList getSavedCreditList() {
+        return savedCreditList;
+    }
     public void setTermSymbol(char symbol) {
         this.termSymbol.setText(String.valueOf(symbol));
     }
