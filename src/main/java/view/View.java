@@ -2,11 +2,14 @@ package view;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import controller.Controller;
+import model.Credit;
 import view.listeners.ButtonListener;
 import view.listeners.TypeSelectionListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Enumeration;
+import java.util.Locale;
 
 
 public class View extends JFrame {
@@ -65,7 +68,25 @@ public class View extends JFrame {
     }
 
     public void onCalculateClick() {
+
+        controller.getCredit().setParameters(Double.parseDouble(amountField.getText()),
+                getSelectedButtonText(periodTimeSelection),
+                Double.parseDouble(interestRateField.getText()),
+                Integer.parseInt(termField.getText()),
+                getSelectedButtonText(periodTimeSelection),
+                Credit.creditTypes.valueOf(creditTypeSelection.getSelectedItem().toString().toUpperCase(Locale.ROOT)));
         controller.getCredit().calculateEndAmount();
+    }
+
+    public String getSelectedButtonText(ButtonGroup buttonGroup) {
+        for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                return button.getText();
+            }
+        }
+        return null;
     }
 
     public void onCancelClick() {
@@ -114,18 +135,14 @@ public class View extends JFrame {
         calculateButton = new JButton("Berechnen");
 
         amountField = new JTextField();
-        amountField.setText(String.valueOf(controller.getCredit().getLoanAmount()));
         interestRateField = new JTextField();
-        interestRateField.setText(String.valueOf(controller.getCredit().getInterestRate()));
         termField = new JTextField();
-        termField.setText(String.valueOf(controller.getCredit().getRepaymentPeriod()));
         interestResult = new JLabel();
-        interestResult.setText(String.valueOf(controller.getCredit().getLoanAmount()));
 
         creditTypeSelection = new JComboBox();
-        creditTypeSelection.addItem("type1");
-        creditTypeSelection.addItem("type2");
-        creditTypeSelection.addItem("type3");
+        creditTypeSelection.addItem("Faelligkeitskredit");
+        creditTypeSelection.addItem("Annuitaetenkredit");
+        creditTypeSelection.addItem("Abzahlungskredit");
         creditTypeSelection.setMaximumSize(new Dimension(width*3/4,20));
         creditTypeSelection.addActionListener(new TypeSelectionListener(this));
 
