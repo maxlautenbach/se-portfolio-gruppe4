@@ -14,7 +14,6 @@ import view.View;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 public class Controller{
     private static Controller instance;
@@ -63,6 +62,18 @@ public class Controller{
         }
 
         return instance;
+    }
+
+    public void calculateEndAmount(){
+        double loanAmount = credit.getLoanAmount();
+        double interestRate = credit.getInterestRate();
+        int interestPeriod = credit.getInterestPeriod();
+        String paymentRhythm = credit.getPaymentRhythm();
+        Credit.creditTypes creditType = credit.getCreditType();
+        double interestSum = Calculation.calculateEndAmount(loanAmount, interestRate, interestPeriod, paymentRhythm, creditType);
+        double repaymentAmount = loanAmount + interestSum;
+        credit.setInterestSum(interestSum);
+        credit.setRepaymentAmount(repaymentAmount);
     }
 
     public void createObject(double loanAmount, String periodUoM, double interestRate, int interestPeriod, String repaymentPeriod, Credit.creditTypes creditType){

@@ -8,7 +8,8 @@ import static model.Credit.creditTypes.FAELLIGKEITSKREDIT;
 public class RunApp{
     public static void main(String[] args){
         Controller controller = Controller.getInstance();
-        controller.createObject(1500,"",0.05,3, "years", FAELLIGKEITSKREDIT);
+        controller.createObject(1500,"",5,21, "monatlich", FAELLIGKEITSKREDIT);
+        controller.calculateEndAmount();
         controller.loadObjectById(1);
         controller.addWindow();
         controller.saveObject();
