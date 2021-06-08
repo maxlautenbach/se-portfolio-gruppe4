@@ -14,13 +14,13 @@ public class Calculation {
         else {actInterestRate = interestRate / 100.0;}
         switch (creditType) {
             case FAELLIGKEITSKREDIT:
-                interestSum = calculateMaturityCredit(loanAmount, interestRate, interestPeriod);
+                interestSum = calculateMaturityCredit(loanAmount, actInterestRate, interestPeriod);
                 break;
             case ANNUITAETENKREDIT:
-                interestSum = calculateAnnuityCredit(loanAmount, interestRate, interestPeriod);
+                interestSum = calculateAnnuityCredit(loanAmount, actInterestRate, interestPeriod);
                 break;
             case ABZAHLUNGSKREDIT:
-                interestSum = calculateInstallmentCredit(loanAmount, interestRate, interestPeriod);
+                interestSum = calculateInstallmentCredit(loanAmount, actInterestRate, interestPeriod);
                 break;
         }
         return interestSum;

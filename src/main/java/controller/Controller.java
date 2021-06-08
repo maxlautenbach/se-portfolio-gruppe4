@@ -127,6 +127,29 @@ public class Controller{
         }
     }
 
+    public Credit[] loadAllObjects(){
+        Credit[] credits = null;
+        try {
+            FileReader fileReader = new FileReader("credits.json");
+            JSONParser jsonParser = new JSONParser();
+            JSONArray creditList = (JSONArray) jsonParser.parse(fileReader);
+            int length = creditList.size();
+            credits = new Credit[length];
+            for (int i = 1; i <= length; i++){
+                JSONObject credit = (JSONObject) creditList.get(i);
+                credits[i] = new ObjectMapper().readValue(credit.get(String.valueOf(i)).toString(), Credit.class);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return credits;
+    }
+
     public String convertObjectToJSON(){
         String json;
         try {
