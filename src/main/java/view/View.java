@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import controller.Controller;
 import model.Credit;
 import view.listeners.ButtonListener;
+import view.listeners.RadioButtonListener;
 import view.listeners.TypeSelectionListener;
 
 import javax.swing.*;
@@ -15,11 +16,13 @@ import java.util.Locale;
 public class View extends JFrame {
 
     private static View instance;
+    private int height, width;
 
     private Controller controller;
     private JPanel topPanel, centerPanel, bottomPanel;
     private BorderLayout outerLayout;
     private GroupLayout centerLayout;
+
     private JLabel title,
             amountLabel, interestRateLabel, termLabel,
             amountSymbol, interestRateSymbol, termSymbol,
@@ -29,25 +32,11 @@ public class View extends JFrame {
     private JComboBox creditTypeSelection;
     private JRadioButton periodMonth, periodYear;
     private ButtonGroup periodTimeSelection;
-    private JList savedCreditList;
     private JScrollPane creditListScrollPane;
     private JSeparator resultSeparator;
+    private JList savedCreditList;
     private JButton saveButton, cancelButton, calculateButton;
-    private int height, width;
 
-
-
-    public JButton getSaveButton() {
-        return saveButton;
-    }
-
-    public JButton getCancelButton() {
-        return cancelButton;
-    }
-
-    public JButton getCalculateButton() {
-        return calculateButton;
-    }
 
     private View(Controller controller) {
         this.controller = controller;
@@ -68,7 +57,6 @@ public class View extends JFrame {
     }
 
     public void onCalculateClick() {
-
         controller.getCredit().setParameters(Double.parseDouble(amountField.getText()),
                 getSelectedButtonText(periodTimeSelection),
                 Double.parseDouble(interestRateField.getText()),
@@ -111,6 +99,7 @@ public class View extends JFrame {
         setTitle("Credit Calculator");
         setSize(width,height);
         setLocation(300,200);
+        setResizable(false);
 
         /*
         * Ininalisieren der Ui Elemente
@@ -130,25 +119,28 @@ public class View extends JFrame {
         termSymbol = new JLabel("M");
         paymentPeriodLabel = new JLabel("Zahlungsryhtmus");
         interestSymbol = new JLabel("€");
-        resultSeparator = new JSeparator();
-        cancelButton = new JButton("Abbrechen");
-        saveButton = new JButton("Speichern");
-        calculateButton = new JButton("Berechnen");
 
         amountField = new JTextField();
         interestRateField = new JTextField();
         termField = new JTextField();
         interestResult = new JLabel();
 
+        resultSeparator = new JSeparator();
+        cancelButton = new JButton("Abbrechen");
+        saveButton = new JButton("Speichern");
+        calculateButton = new JButton("Berechnen");
+
         creditTypeSelection = new JComboBox();
         creditTypeSelection.addItem("Faelligkeitskredit");
         creditTypeSelection.addItem("Annuitaetenkredit");
         creditTypeSelection.addItem("Abzahlungskredit");
-        creditTypeSelection.setMaximumSize(new Dimension(width*3/4,20));
+        creditTypeSelection.setMaximumSize(new Dimension(width,20));
         creditTypeSelection.addActionListener(new TypeSelectionListener(this));
 
         periodMonth = new JRadioButton("monatlich");
+        periodMonth.addActionListener(new RadioButtonListener(this));
         periodYear = new JRadioButton("jährlich");
+        periodYear.addActionListener(new RadioButtonListener(this));
         periodTimeSelection = new ButtonGroup();
         periodTimeSelection.add(periodMonth);
         periodTimeSelection.add(periodYear);
@@ -185,6 +177,7 @@ public class View extends JFrame {
         centerLayout.setAutoCreateContainerGaps(true);
 
         centerLayout.setHorizontalGroup(centerLayout.createSequentialGroup()
+                .addGap(15,20,25)
             .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(centerLayout.createSequentialGroup()
                     .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -216,11 +209,13 @@ public class View extends JFrame {
                 )
                 .addComponent(resultSeparator)
             )
+            .addGap(15,20,25)
             .addComponent(creditListScrollPane)
         );
         centerLayout.setVerticalGroup(centerLayout.createSequentialGroup()
             .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addGroup(centerLayout.createSequentialGroup()
+                    .addGap(15,20,25)
                     .addComponent(creditTypeSelection)
                     .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(amountLabel)
@@ -244,6 +239,7 @@ public class View extends JFrame {
                             .addComponent(periodYear)
                         )
                     )
+                    .addGap(15,20,25)
                     .addComponent(resultSeparator)
                     .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(interestLabel)
@@ -259,5 +255,23 @@ public class View extends JFrame {
 
     }
 
+    public JButton getSaveButton() {
+        return saveButton;
+    }
 
+    public JButton getCancelButton() {
+        return cancelButton;
+    }
+
+    public JButton getCalculateButton() {
+        return calculateButton;
+    }
+
+    public ButtonGroup getPeriodTimeSelection() {
+        return periodTimeSelection;
+    }
+
+    public void setTermSymbol(char symbol) {
+        this.termSymbol.setText(String.valueOf(symbol));
+    }
 }
