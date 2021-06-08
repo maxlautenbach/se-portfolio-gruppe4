@@ -34,7 +34,7 @@ public class Credit{
     }
     public void calculateEndAmount() {
         interestSum = 0;
-        if(paymentRhythm == "monatlich") {
+        if(paymentRhythm.equals("monatlich")) {
             DecimalFormat df = new DecimalFormat("#.#####");
             df.setRoundingMode(RoundingMode.CEILING);
             actInterestRate = Double.parseDouble(df.format(Math.pow(interestRate, 1.0 / 12.0)));
