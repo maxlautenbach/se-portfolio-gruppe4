@@ -76,6 +76,7 @@ public class View extends JFrame {
                 getSelectedButtonText(periodTimeSelection),
                 Credit.creditTypes.valueOf(creditTypeSelection.getSelectedItem().toString().toUpperCase(Locale.ROOT)));
         controller.getCredit().calculateEndAmount();
+        interestResult.setText(String.valueOf(controller.getCredit().getInterestSum()));
     }
 
     public String getSelectedButtonText(ButtonGroup buttonGroup) {
@@ -152,8 +153,7 @@ public class View extends JFrame {
         periodTimeSelection.add(periodMonth);
         periodTimeSelection.add(periodYear);
 
-
-        savedCreditList = new JList(new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"});
+        savedCreditList = new JList( new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"});
         creditListScrollPane = new JScrollPane();
         creditListScrollPane.setViewportView(savedCreditList);
         creditListScrollPane.setMaximumSize(new Dimension(width/4,height));

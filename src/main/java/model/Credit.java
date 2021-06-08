@@ -1,7 +1,5 @@
 package model;
 
-import org.junit.Assert;
-
 import java.lang.Math;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -36,7 +34,7 @@ public class Credit{
     }
     public void calculateEndAmount() {
         interestSum = 0;
-        if(paymentRhythm == "m") {
+        if(paymentRhythm == "monatlich") {
             DecimalFormat df = new DecimalFormat("#.#####");
             df.setRoundingMode(RoundingMode.CEILING);
             actInterestRate = Double.parseDouble(df.format(Math.pow(interestRate, 1.0 / 12.0)));
