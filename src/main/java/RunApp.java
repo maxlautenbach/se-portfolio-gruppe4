@@ -7,6 +7,7 @@ public class RunApp{
     public static void main(String[] args){
         Controller controller = Controller.getInstance();
         controller.createObject(1500,0.05f,"yearly",3, "years", 500, "yearly", "");
+        controller.loadObjectById(1);
         controller.addWindow();
         controller.saveObject();
 
