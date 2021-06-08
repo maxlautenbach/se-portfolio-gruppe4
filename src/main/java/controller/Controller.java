@@ -65,8 +65,8 @@ public class Controller{
         return instance;
     }
 
-    public void createObject(float loanAmount, float interestRate, String interestPeriod, int period, String periodUoM, float repaymentAmount, String repaymentPeriod, String creditType){
-        credit.setAllAtributes(loanAmount, interestRate, interestPeriod, period, periodUoM, repaymentAmount, repaymentPeriod, creditType);
+    public void createObject(double loanAmount, String periodUoM, double interestRate, int interestPeriod, String repaymentPeriod, Credit.creditTypes creditType){
+        credit.setParameters(loanAmount, periodUoM, interestRate, interestPeriod, repaymentPeriod, creditType);
     }
 
     public void saveObject(){
@@ -106,7 +106,7 @@ public class Controller{
             JSONParser jsonParser = new JSONParser();
             JSONArray creditList = (JSONArray) jsonParser.parse(fileReader);
             JSONObject credit = (JSONObject) creditList.get(id-1);
-            //this.credit = new ObjectMapper().readValue(credit.toJSONString(), Credit.class);
+            this.credit = new ObjectMapper().readValue(credit.get(String.valueOf(id)).toString(), Credit.class);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (ParseException e) {
