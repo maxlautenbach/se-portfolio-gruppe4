@@ -1,8 +1,6 @@
 package model;
 
 import java.lang.Math;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 public class Credit{
     private double loanAmount; // Kreditbetrag
@@ -27,7 +25,7 @@ public class Credit{
     public void setParameters(double loanAmount, String periodUoM, double interestRate, int interestPeriod, String paymentRhythm, creditTypes creditType) {
         this.loanAmount = loanAmount;
         this.periodUoM = periodUoM;
-        this.interestRate = interestRate/100;
+        this.interestRate = interestRate;
         this.interestPeriod = interestPeriod;
         this.paymentRhythm = paymentRhythm;
         this.creditType = creditType;
@@ -35,12 +33,9 @@ public class Credit{
     public void calculateEndAmount() {
         interestSum = 0;
         if(paymentRhythm.equals("monatlich")) {
-            DecimalFormat df = new DecimalFormat("#.#####");
-            df.setRoundingMode(RoundingMode.CEILING);
-            actInterestRate = Double.parseDouble(df.format(Math.pow(interestRate, 1.0 / 12.0)));
-            System.out.println(actInterestRate);
+            actInterestRate = (Math.pow(1 + interestRate / 100.0, 1.0 / 12.0) - 1);
         }
-        else {actInterestRate = interestRate;}
+        else {actInterestRate = interestRate / 100.0;}
         switch (creditType) {
             case FAELLIGKEITSKREDIT:
                 calculateMaturityCredit();
