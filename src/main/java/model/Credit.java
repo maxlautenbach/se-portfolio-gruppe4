@@ -32,7 +32,7 @@ public class Credit{
     }
     public void calculateEndAmount() {
         interestSum = 0;
-        if(paymentRhythm == "m") {
+        if(paymentRhythm == "monatlich") {
             actInterestRate = interestRate/12;
         }
         else {actInterestRate = interestRate;}
