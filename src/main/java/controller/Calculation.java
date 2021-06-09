@@ -2,8 +2,6 @@ package controller;
 
 import model.Credit;
 
-import static model.Credit.creditTypes.*;
-
 public class Calculation {
     public static double calculateEndAmount(double loanAmount, double interestRate, int interestPeriod, String paymentRhythm, Credit.creditTypes creditType) {
         double interestSum = 0;
@@ -13,10 +11,10 @@ public class Calculation {
         }
         else {actInterestRate = interestRate / 100.0;}
         switch (creditType) {
-            case FAELLIGKEITSKREDIT:
+            case FÄLLIGKEITSKREDIT:
                 interestSum = calculateMaturityCredit(loanAmount, actInterestRate, interestPeriod);
                 break;
-            case ANNUITAETENKREDIT:
+            case ANNUITÄTENKREDIT:
                 interestSum = calculateAnnuityCredit(loanAmount, actInterestRate, interestPeriod);
                 break;
             case ABZAHLUNGSKREDIT:

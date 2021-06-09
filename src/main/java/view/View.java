@@ -15,9 +15,7 @@ import java.util.Locale;
 
 
 public class View extends JFrame {
-
     private static View instance;
-    private int height, width;
 
     private Controller controller;
     private JPanel topPanel, centerPanel, bottomPanel;
@@ -35,7 +33,7 @@ public class View extends JFrame {
     private ButtonGroup periodTimeSelection;
     private JScrollPane creditListScrollPane;
     private JSeparator resultSeparator;
-    private JList savedCreditList;
+    private JList<Credit> savedCreditList;
     private JButton saveButton, cancelButton, calculateButton;
 
 
@@ -56,6 +54,7 @@ public class View extends JFrame {
     public void onSaveClick() {
         onCalculateClick();
         controller.saveObject();
+        reloadList();
     }
 
     public void onCalculateClick() {
@@ -87,7 +86,13 @@ public class View extends JFrame {
     }
 
     public void getValuesFromCredit(){
-        creditTypeSelection.setSelectedItem(controller.getCredit().getCreditType());
+        Credit tmp3 = controller.getCredit();
+        String tmp = String.valueOf( tmp3.getCreditType());
+        switch (tmp.toUpperCase(Locale.ROOT)){
+            case "FÄLLIGKEITSKREDIT" : creditTypeSelection.setSelectedItem("Fälligkeitskredit"); break;
+            case "ANNUITÄTENKREDIT" : creditTypeSelection.setSelectedItem("Annuitätenkredit"); break;
+            case "ABZAHLUNGSKREDIT" : creditTypeSelection.setSelectedItem("Abzahlungskredit"); break;
+        }
         amountField.setText(String.valueOf( controller.getCredit().getLoanAmount()));
         interestRateField.setText(String.valueOf( controller.getCredit().getInterestRate()));
         termField.setText(String.valueOf( controller.getCredit().getInterestPeriod()));
@@ -96,6 +101,13 @@ public class View extends JFrame {
             case "jährlich" : periodTimeSelection.setSelected(periodYear.getModel(),true);break;
         }
 
+    }
+
+    private void reloadList(){
+        if(controller.loadAllObjects() != null){
+            savedCreditList.setListData(controller.loadAllObjects());
+        }
+        savedCreditList.repaint();
     }
 
     private void initalize() {
@@ -107,11 +119,9 @@ public class View extends JFrame {
             System.err.println( "Failed to initialize LaF" );
         }
 
-        height = 350;
-        width = 600;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Credit Calculator");
-        setSize(width,height);
+        setSize(800,350);
         setLocation(300,200);
         setResizable(false);
 
@@ -144,11 +154,11 @@ public class View extends JFrame {
         saveButton = new JButton("Speichern");
         calculateButton = new JButton("Berechnen");
 
-        creditTypeSelection = new JComboBox();
-        creditTypeSelection.addItem("Faelligkeitskredit");
-        creditTypeSelection.addItem("Annuitaetenkredit");
+        creditTypeSelection = new JComboBox<>();
+        creditTypeSelection.addItem("Fälligkeitskredit");
+        creditTypeSelection.addItem("Annuitätenkredit");
         creditTypeSelection.addItem("Abzahlungskredit");
-        creditTypeSelection.setMaximumSize(new Dimension(width,20));
+        //creditTypeSelection.setMaximumSize(new Dimension(width,20));
         creditTypeSelection.addActionListener(new TypeSelectionListener(this));
 
         periodMonth = new JRadioButton("monatlich");
@@ -159,15 +169,10 @@ public class View extends JFrame {
         periodTimeSelection.add(periodMonth);
         periodTimeSelection.add(periodYear);
 
-        //;
-        //new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"}
-        if(controller.loadAllObjects() != null){
-        savedCreditList = new JList( controller.loadAllObjects());}else{
-            savedCreditList = new JList();
-        }
+        savedCreditList = new JList<>(controller.loadAllObjects());
         creditListScrollPane = new JScrollPane();
         creditListScrollPane.setViewportView(savedCreditList);
-        creditListScrollPane.setMaximumSize(new Dimension(width/4,height));
+        creditListScrollPane.setMaximumSize(new Dimension(200,400));
         savedCreditList.setToolTipText("Wähle einen gespeicherten Kredit");
         savedCreditList.setLayoutOrientation(JList.VERTICAL);
         savedCreditList.addListSelectionListener(new CreditListListener(this.controller));
@@ -197,7 +202,7 @@ public class View extends JFrame {
         centerLayout.setAutoCreateContainerGaps(true);
 
         centerLayout.setHorizontalGroup(centerLayout.createSequentialGroup()
-                .addGap(15,20,25)
+            .addGap(15,20,25)
             .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(centerLayout.createSequentialGroup()
                     .addGroup(centerLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -287,7 +292,7 @@ public class View extends JFrame {
     public ButtonGroup getPeriodTimeSelection() {
         return periodTimeSelection;
     }
-    public JList getSavedCreditList() {
+    public JList<Credit> getSavedCreditList() {
         return savedCreditList;
     }
     public void setTermSymbol(char symbol) {

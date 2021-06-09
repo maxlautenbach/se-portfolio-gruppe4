@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Locale;
+
 public class Credit{
     private double loanAmount; // Kreditbetrag
     private double interestRate; //Zinssatz
@@ -9,7 +11,7 @@ public class Credit{
     private double repaymentAmount; //zurückzuzahlende Betrag
     //private String repaymentPeriod;
     private String paymentRhythm; // braucht man meiner Meinung nach gar nicht für die Berechnung
-    public enum creditTypes {FAELLIGKEITSKREDIT, ANNUITAETENKREDIT, ABZAHLUNGSKREDIT}
+    public enum creditTypes {FÄLLIGKEITSKREDIT, ANNUITÄTENKREDIT, ABZAHLUNGSKREDIT}
     private creditTypes creditType; //Kreditarten
     private double interestSum; //aufaddierten Zinsen
     private double interest; //Zinsen der Periode
@@ -22,7 +24,9 @@ public class Credit{
     }
     @Override
     public String toString(){
-        return creditType + " " + loanAmount;
+        StringBuilder typeName = new StringBuilder(creditType.toString().toLowerCase(Locale.ROOT));
+        typeName.replace(0,1, String.valueOf(typeName.charAt(0)).toUpperCase(Locale.ROOT)) ;
+        return  typeName + " " + loanAmount;
     }
 
     public void setParameters(double loanAmount, String periodUoM, double interestRate, int interestPeriod, String paymentRhythm, creditTypes creditType) {
