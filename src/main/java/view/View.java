@@ -86,9 +86,7 @@ public class View extends JFrame {
     }
 
     public void getValuesFromCredit(){
-        Credit tmp3 = controller.getCredit();
-        String tmp = String.valueOf( tmp3.getCreditType());
-        switch (tmp.toUpperCase(Locale.ROOT)){
+        switch (String.valueOf( controller.getCredit().getCreditType()).toUpperCase(Locale.ROOT)){
             case "FÄLLIGKEITSKREDIT" : creditTypeSelection.setSelectedItem("Fälligkeitskredit"); break;
             case "ANNUITÄTENKREDIT" : creditTypeSelection.setSelectedItem("Annuitätenkredit"); break;
             case "ABZAHLUNGSKREDIT" : creditTypeSelection.setSelectedItem("Abzahlungskredit"); break;
@@ -100,7 +98,7 @@ public class View extends JFrame {
             case "monatlich" : periodTimeSelection.setSelected(periodMonth.getModel(),true);break;
             case "jährlich" : periodTimeSelection.setSelected(periodYear.getModel(),true);break;
         }
-
+        interestResult.setText("");
     }
 
     private void reloadList(){
