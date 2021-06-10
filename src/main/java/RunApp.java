@@ -10,8 +10,9 @@ public class RunApp{
         Controller controller = Controller.getInstance();
         controller.createObject(1500,"",5,21, "monatlich", FAELLIGKEITSKREDIT);
         controller.calculateEndAmount();
+        controller.saveObject();
         controller.loadObjectById(1);
         controller.addWindow();
-        controller.saveObject();
+
     }
 }

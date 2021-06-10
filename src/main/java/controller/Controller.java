@@ -20,7 +20,6 @@ public class Controller{
 
     private View view;
     private Credit credit;
-    private HashMap<Integer, Float> creditMap;
     private static int nextId;
 
     private Controller() {
