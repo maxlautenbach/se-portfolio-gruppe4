@@ -6,7 +6,6 @@ import model.Credit;
 import view.listeners.ButtonListener;
 import view.listeners.CreditListListener;
 import view.listeners.RadioButtonListener;
-import view.listeners.TypeSelectionListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +53,10 @@ public class View extends JFrame {
     public void onSaveClick() {
         onCalculateClick();
         controller.saveObject();
-        reloadList();
+        if(controller.loadAllObjects() != null){
+            savedCreditList.setListData(controller.loadAllObjects());
+        }
+        savedCreditList.repaint();
     }
 
     public void onCalculateClick() {
@@ -99,13 +101,6 @@ public class View extends JFrame {
             case "jährlich" : periodTimeSelection.setSelected(periodYear.getModel(),true);break;
         }
         interestResult.setText("");
-    }
-
-    private void reloadList(){
-        if(controller.loadAllObjects() != null){
-            savedCreditList.setListData(controller.loadAllObjects());
-        }
-        savedCreditList.repaint();
     }
 
     private void initalize() {
@@ -156,8 +151,6 @@ public class View extends JFrame {
         creditTypeSelection.addItem("Fälligkeitskredit");
         creditTypeSelection.addItem("Annuitätenkredit");
         creditTypeSelection.addItem("Abzahlungskredit");
-        //creditTypeSelection.setMaximumSize(new Dimension(width,20));
-        creditTypeSelection.addActionListener(new TypeSelectionListener(this));
 
         periodMonth = new JRadioButton("monatlich");
         periodMonth.addActionListener(new RadioButtonListener(this));
