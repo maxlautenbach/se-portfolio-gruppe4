@@ -9,14 +9,17 @@ import view.listeners.RadioButtonListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.Locale;
+import java.util.Objects;
 
 
 public class View extends JFrame {
     private static View instance;
 
-    private Controller controller;
+    private final Controller controller;
     private JPanel topPanel, centerPanel, bottomPanel;
     private BorderLayout outerLayout;
     private GroupLayout centerLayout;
@@ -50,6 +53,22 @@ public class View extends JFrame {
         return instance;
     }
 
+    public void errorMessage(String errorMessage){
+        JDialog errorDialog = new JDialog();
+        errorDialog.setSize(200,100);
+        errorDialog.setLocation(400,400);
+        errorDialog.setTitle("An Error occurred");
+        JPanel errorPanel = new JPanel();
+        BorderLayout errorLayout = new BorderLayout();
+        errorPanel.setLayout(errorLayout);
+        errorDialog.add(errorPanel);
+        errorPanel.add( new JLabel(errorMessage) , BorderLayout.CENTER);
+        errorDialog.setVisible(true);
+        JButton button = new JButton("Close");
+        button.addActionListener(e -> errorDialog.dispose());
+        errorDialog.add(button,BorderLayout.SOUTH);
+    }
+
     public void onSaveClick() {
         onCalculateClick();
         controller.saveObject();
@@ -60,14 +79,18 @@ public class View extends JFrame {
     }
 
     public void onCalculateClick() {
+        try{
         controller.getCredit().setParameters(Double.parseDouble(amountField.getText()),
                 getSelectedButtonText(periodTimeSelection),
                 Double.parseDouble(interestRateField.getText()),
                 Integer.parseInt(termField.getText()),
                 getSelectedButtonText(periodTimeSelection),
-                Credit.creditTypes.valueOf(creditTypeSelection.getSelectedItem().toString().toUpperCase(Locale.ROOT)));
+                Credit.creditTypes.valueOf(Objects.requireNonNull(creditTypeSelection.getSelectedItem()).toString().toUpperCase(Locale.ROOT)));
         controller.calculateEndAmount();
         interestResult.setText(String.valueOf(controller.getCredit().getInterestSum()));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public String getSelectedButtonText(ButtonGroup buttonGroup) {

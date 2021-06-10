@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class ButtonListener implements ActionListener {
 
-    private View view;
+    private final View view;
 
     public ButtonListener(View view){
         this.view = view;

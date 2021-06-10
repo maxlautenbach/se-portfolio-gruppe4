@@ -27,7 +27,7 @@ public class Credit{
         try {
             StringBuilder typeName = new StringBuilder(creditType.toString().toLowerCase(Locale.ROOT));
             typeName.replace(0, 1, String.valueOf(typeName.charAt(0)).toUpperCase(Locale.ROOT));
-            return loanAmount + "€ - " + typeName;
+            return repaymentAmount + "€ - " + typeName;
         } catch (NullPointerException e) {
             return "";
         }

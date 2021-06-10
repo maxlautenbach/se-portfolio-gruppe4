@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class RadioButtonListener implements ActionListener {
 
-    private View view;
+    private final View view;
 
     public RadioButtonListener(View view){
         this.view = view;
