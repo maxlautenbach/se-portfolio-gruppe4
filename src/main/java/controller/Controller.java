@@ -146,7 +146,8 @@ public class Controller{
         } catch (ParseException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            credits = new Credit[1];
+            credits[0] = this.credit;
         } catch (IOException e) {
             e.printStackTrace();
         }

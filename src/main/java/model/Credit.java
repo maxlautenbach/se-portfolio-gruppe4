@@ -24,9 +24,13 @@ public class Credit{
     }
     @Override
     public String toString(){
-        StringBuilder typeName = new StringBuilder(creditType.toString().toLowerCase(Locale.ROOT));
-        typeName.replace(0,1, String.valueOf(typeName.charAt(0)).toUpperCase(Locale.ROOT)) ;
-        return  typeName + " " + loanAmount;
+        try {
+            StringBuilder typeName = new StringBuilder(creditType.toString().toLowerCase(Locale.ROOT));
+            typeName.replace(0, 1, String.valueOf(typeName.charAt(0)).toUpperCase(Locale.ROOT));
+            return loanAmount + "€ - " + typeName;
+        } catch (NullPointerException e) {
+            return "";
+        }
     }
 
     public void setParameters(double loanAmount, String periodUoM, double interestRate, int interestPeriod, String paymentRhythm, creditTypes creditType) {
