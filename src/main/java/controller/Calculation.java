@@ -5,11 +5,14 @@ import model.Credit;
 import static model.Credit.creditTypes.*;
 
 public class Calculation {
+
+
     public static double calculateEndAmount(double loanAmount, double interestRate, int interestPeriod, String paymentRhythm, Credit.creditTypes creditType) {
         double interestSum = 0;
         double actInterestRate;
         if(paymentRhythm.equals("monatlich")) {
-            actInterestRate = (Math.pow(1 + interestRate / 100.0, 1.0 / 12.0) - 1);
+            actInterestRate = interestRate /100.0;
+            actInterestRate = actInterestRate/12;
         }
         else {actInterestRate = interestRate / 100.0;}
         switch (creditType) {
@@ -36,7 +39,7 @@ public class Calculation {
         double interestSum = 0;
         double remainingDept = loanAmount;
         for (int i = 0; i<interestPeriod; i++){
-            double interest = loanAmount * interestRate;
+            double interest = remainingDept * interestRate;
             interestSum = interestSum + interest;
             double repayment = annuity - interest;
             remainingDept = remainingDept-repayment;

@@ -1,9 +1,10 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import controller.Calculation;
 import controller.Controller;
 import model.Credit;
 
-import static model.Credit.creditTypes.FAELLIGKEITSKREDIT;
+import static model.Credit.creditTypes.*;
 
 public class RunApp{
     public static void main(String[] args){
@@ -13,5 +14,6 @@ public class RunApp{
         controller.loadObjectById(1);
         controller.addWindow();
         controller.saveObject();
+
     }
 }
