@@ -1,5 +1,8 @@
 package model;
 
+import controller.Controller;
+import view.View;
+
 public class Credit{
     private double loanAmount; // Kreditbetrag
     private double interestRate; //Zinssatz
@@ -17,8 +20,11 @@ public class Credit{
     private double annuity; //Annuität
     private double remainingDept; //Restschuld
     private double actInterestRate;
+    private View view;
 
     public Credit(){
+        Controller control = Controller.getInstance();
+        view = control.getView();
     }
     public void setParameters(double loanAmount, double interestRate, int interestPeriod, String paymentRhythm, creditTypes creditType) {
         setLoanAmount(loanAmount);
@@ -35,25 +41,52 @@ public class Credit{
     public void setLoanAmount(double loanAmount) {
         //>0, <1,7 * 10^308, no letters but its an double so proving that here does not make that much sense
         this.loanAmount = loanAmount;
+        if(loanAmount <= 0)
+        {
+            view.errorMessage("Der Kreditbetrag darf nicht kleiner/gleich null sein. Bitte korrigieren Sie Ihre Eingabe.");
+        }
+        else if(interestRate < 1.7E308)
+        {
+            view.errorMessage("Der Kreditbetrag ist zu hoch. Bitte korrigieren Sie Ihre Eingabe.");
+        }
+        else{
+            this.interestRate = interestRate;
+        }
     }
     public double getInterestRate() {
         return interestRate;
     }
     public void setInterestRate(double interestRate) {
         //>0, <100
-        this.interestRate = interestRate;
+        if(interestRate <= 0)
+        {
+            view.errorMessage("Der Zinssatz darf nicht kleiner/gleich null sein. Bitte korrigieren Sie Ihre Eingabe.");
+        }
+        else if(interestRate >= 100)
+        {
+            view.errorMessage("Der Zinssatz darf nicht größer/gleich 100 sein. Bitte korrigieren Sie Ihre Eingabe.");
+        }
+        else{
+            this.interestRate = interestRate;
+        }
+
     }
     public int getInterestPeriod() {
         return interestPeriod;
     }
     public void setInterestPeriod(int interestPeriod) {
-        //>0, <2000
-        this.interestPeriod = interestPeriod;
+        if(interestPeriod <= 0)
+        {
+            view.errorMessage("Die Laufzeit darf nicht kleiner/gleich null sein. Bitte korrigieren Sie Ihre Eingabe.");
+        }
+        else{
+            this.interestPeriod = interestPeriod;
+        }
     }
     public double getRepaymentAmount() {
         return repaymentAmount;
     }
-    public void setRepaymentAmount(double repaymentAmount) { //does it make sense to make this one public?
+    public void setRepaymentAmount(double repaymentAmount) {
         this.repaymentAmount = repaymentAmount;
     }
     public String getPaymentRhythm() {
@@ -61,7 +94,10 @@ public class Credit{
     }
     public void setPaymentRhythm(String paymentRhythm) {
         // either monatlich or jährlich other ones are not allowed here
-        this.paymentRhythm = paymentRhythm;
+        if (paymentRhythm.equals("monatlich") || paymentRhythm.equals("jährlich")){
+            this.paymentRhythm = paymentRhythm;
+        }
+        else {view.errorMessage("Bitte wählen Sie erneut den gewünschten Zahlungsrhythmus.");}
     }
     public model.Credit.creditTypes getCreditType() {
         return creditType;
