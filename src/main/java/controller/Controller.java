@@ -13,20 +13,24 @@ import view.View;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
+/**
+ * Initializert das UI, das Model und die letzte ID
+ */
 public class Controller{
     private static Controller instance;
 
     private View view;
     private Credit credit;
-    private HashMap<Integer, Float> creditMap;
     private static int nextId;
 
     private Controller() {
         credit = new Credit();
     }
 
+    /**
+     * Fügt ein UI zum Controller hin zu und rendered das UI.
+     */
     public void addWindow(){
         view = View.getInstance(this);
         view.setVisible(true);
@@ -44,6 +48,9 @@ public class Controller{
         this.credit = credit;
     }
 
+    /**
+     * Initialisiert die aktuelle ID, um Kredite
+     */
     private static void initNextId(){
         try {
             FileReader file = new FileReader("credits.json");
@@ -58,6 +65,10 @@ public class Controller{
         }
     }
 
+    /**
+     * Gewährt Singleton-Entwurfsmuster.
+     * @return Instanz des Controller
+     */
     public static Controller getInstance() {
         initNextId();
 
@@ -68,6 +79,9 @@ public class Controller{
         return instance;
     }
 
+    /**
+     *  Triggert die Berechnung der Zinssumme des Kredites und schreibt diese zusammen mit dem Rückzahlungsbetrag in das Kreditobjekt zurück.
+     */
     public void calculateEndAmount(){
         double loanAmount = credit.getLoanAmount();
         double interestRate = credit.getInterestRate();
@@ -84,6 +98,9 @@ public class Controller{
         credit.setParameters(loanAmount, interestRate, interestPeriod, repaymentPeriod, creditType);
     }
 
+    /**
+     * Speichert Kredit in die Kreditliste der credits.json
+     */
     public void saveObject(){
         JSONParser jsonParser = new JSONParser();
         JSONArray creditList = null;
@@ -115,6 +132,10 @@ public class Controller{
         }
     }
 
+    /**
+     * Erweiterungsstelle - Lädt ein Objekt anhand der übergebenen ID
+     * @param id
+     */
     public void loadObjectById(int id){
         try {
             FileReader fileReader = new FileReader("credits.json");
@@ -131,6 +152,10 @@ public class Controller{
         }
     }
 
+    /**
+     * Lädt alle Objekte für das UI, um es in einer Liste anzuzeigen
+     * @return Array von Krediten, geladen aus der credits.json Datei.
+     */
     public Credit[] loadAllObjects(){
         Credit[] credits = null;
         try {
@@ -155,6 +180,10 @@ public class Controller{
         return credits;
     }
 
+    /**
+     *
+     * @return Returns a JSON String with all parameters of the current object.
+     */
     public String convertObjectToJSON(){
         String json;
         try {
