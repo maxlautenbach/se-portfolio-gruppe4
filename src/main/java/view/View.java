@@ -31,15 +31,27 @@ public class View extends JFrame {
     private JRadioButton periodMonth, periodYear;
     private ButtonGroup periodTimeSelection;
     private JScrollPane creditListScrollPane;
+    /**
+     * separiert das Ergebnis der Berechnung von den Nutzereingaben
+     */
     private JSeparator resultSeparator;
     private JList<Credit> savedCreditList;
     private JButton saveButton, cancelButton, calculateButton;
 
+    /**
+     * Erstellt View mit controller
+     * @param controller
+     */
     private View(Controller controller) {
         this.controller = controller;
         initalize();
     }
 
+    /**
+     * Gewährt Singletonentwurfsmuster
+     * @param controller
+     * @return
+     */
     public static View getInstance(Controller controller) {
 
         if (instance == null) {
@@ -49,6 +61,10 @@ public class View extends JFrame {
         return instance;
     }
 
+    /**
+     * Erstellen eines Dialogs mit der übergebenen Errormessage
+     * @param errorMessage
+     */
     public static void errorMessage(String errorMessage){
         JDialog errorDialog = new JDialog();
         errorDialog.setSize(200,100);
@@ -65,6 +81,9 @@ public class View extends JFrame {
         errorDialog.add(button,BorderLayout.SOUTH);
     }
 
+    /**
+     * Berechnen des Kredits und anschließendes Abspeichern des Kredits
+     */
     public void onSaveClick() {
         onCalculateClick();
         controller.saveObject();
@@ -74,6 +93,9 @@ public class View extends JFrame {
         savedCreditList.repaint();
     }
 
+    /**
+     * Starten der im Controller definierten Berechnung mit Übergabe der Nutzereingaben
+     */
     public void onCalculateClick() {
         try{
         controller.getCredit().setParameters(Double.parseDouble(amountField.getText()),
@@ -88,6 +110,11 @@ public class View extends JFrame {
         }
     }
 
+    /**
+     * Übergibt den Text des ausgewählen Buttons in der übergebenen ButtonGroup
+     * @param buttonGroup
+     * @return Text des ausgewählen Buttons
+     */
     public String getSelectedButtonText(ButtonGroup buttonGroup) {
         for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
             AbstractButton button = buttons.nextElement();
@@ -99,12 +126,18 @@ public class View extends JFrame {
         return null;
     }
 
+    /**
+     * Zurücksetzen der Nutzereingaben in den Eingabefeldern
+     */
     public void onCancelClick() {
         amountField.setText("");
         interestRateField.setText("");
         termField.setText("");
     }
 
+    /**
+     * Eintragen der Werte des aktuellen Kredits in die entsprechenden UI Felder
+     */
     public void getValuesFromCredit(){
         switch (String.valueOf( controller.getCredit().getCreditType()).toUpperCase(Locale.ROOT)){
             case "FÄLLIGKEITSKREDIT" : creditTypeSelection.setSelectedItem("Fälligkeitskredit"); break;
@@ -121,6 +154,9 @@ public class View extends JFrame {
         interestResult.setText("");
     }
 
+    /**
+     * Ersterstellung aller UI Elemente und Anordung dieser durch Layouts
+     */
     private void initalize() {
 
         try {
@@ -304,6 +340,11 @@ public class View extends JFrame {
     public JList<Credit> getSavedCreditList() {
         return savedCreditList;
     }
+
+    /**
+     * Setzt das hinter der Termeingabe befindliche Symbol auf den übergebenen char
+     * @param symbol
+     */
     public void setTermSymbol(char symbol) {
         this.termSymbol.setText(String.valueOf(symbol));
     }
