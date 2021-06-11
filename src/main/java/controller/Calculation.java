@@ -1,10 +1,20 @@
 package controller;
 
 import model.Credit;
-
+/**
+ * Klasse, in der die Kalkulationslogik implementiert ist
+ */
 public class Calculation {
 
-
+    /**
+     * @param loanAmount
+     * @param interestRate
+     * @param interestPeriod
+     * @param paymentRhythm
+     * @param creditType
+     * Eingabewerte werden gesetzt, Ergebnisse zurückgesetzt, Kalkulation je nach Kredittyp aufgerufen
+     * @return interestSum
+     */
     public static double calculateEndAmount(double loanAmount, double interestRate, int interestPeriod, String paymentRhythm, Credit.creditTypes creditType) {
         double interestSum = 0;
         double actInterestRate;
@@ -26,11 +36,23 @@ public class Calculation {
         }
         return interestSum;
     }
-
+    /**
+     * @param loanAmount
+     * @param interestRate
+     * @param interestPeriod
+     * Methode zur Kalkulation eines einfachen Fälligkeitskredits
+     * @return interestSum
+     */
     private static double calculateMaturityCredit(double loanAmount, double interestRate, double interestPeriod) {
         return loanAmount * interestRate * interestPeriod;
     }
-
+    /**
+     * @param loanAmount
+     * @param interestRate
+     * @param interestPeriod
+     * Methode zur Kalkulation eines Annuitätenkredits
+     * @return interestSum
+     */
     private static double calculateAnnuityCredit(double loanAmount, double interestRate, int interestPeriod) {
         double periodFactor = Math.pow(1+interestRate, interestPeriod); //Exponentialrechung
         double annuity = loanAmount * (periodFactor * interestRate)/(periodFactor-1);
@@ -44,7 +66,13 @@ public class Calculation {
         }
         return interestSum;
     }
-
+    /**
+     * @param loanAmount
+     * @param interestRate
+     * @param interestPeriod
+     * Methode zur Kalkulation eines Abzahlungskredits
+     * @return interestSum
+     */
     private static double calculateInstallmentCredit(double loanAmount, double interestRate, int interestPeriod) {
         double repayment = loanAmount / interestPeriod;
         double remainingDept = loanAmount;

@@ -2,7 +2,9 @@ package model;
 
 import java.util.Locale;
 import view.View;
-
+/**
+ * Klasse Credit stellt Schnittstelle zwischen controller und view dar und ermöglicht eine einfache Datenbankanbindung
+ */
 public class Credit{
     private double loanAmount; // Kreditbetrag
     private double interestRate; //Zinssatz
@@ -15,6 +17,9 @@ public class Credit{
 
     public Credit(){
     }
+    /**
+     * Überschreiben der toString Methode und Rundung, um Werte korrekt anzeigen zu können
+     */
     @Override
     public String toString(){
         try {
@@ -25,7 +30,14 @@ public class Credit{
             return "";
         }
     }
-
+    /**
+     * @param loanAmount
+     * @param interestRate
+     * @param interestPeriod
+     * @param paymentRhythm
+     * @param creditType
+     * Zum setzten der Parameter aus der View heraus mit den Daten der Benutzereingaben
+     */
     public void setParameters(double loanAmount, double interestRate, int interestPeriod, String paymentRhythm, creditTypes creditType) {
         setLoanAmount(loanAmount);
         setPaymentRhythm(paymentRhythm);
@@ -37,6 +49,11 @@ public class Credit{
     public double getLoanAmount() {
         return loanAmount;
     }
+    /**
+     * @param loanAmount
+     * Setzten des Kreditbetrags, Plausibilitätsprüfung der Eingabewerte und
+     * ggf. Rückgabe einer Fehlermeldung über die errorMessage Methode
+     */
     public void setLoanAmount(double loanAmount) {
         //>0, <1,7 * 10^308, no letters but its an double so proving that here does not make that much sense
         this.loanAmount = loanAmount;
@@ -55,6 +72,11 @@ public class Credit{
     public double getInterestRate() {
         return interestRate;
     }
+    /**
+     * @param interestRate
+     * Setzten des Zinssatzes, Plausibilitätsprüfung der Eingabewerte und
+     * ggf. Rückgabe einer Fehlermeldung über die errorMessage Methode
+     */
     public void setInterestRate(double interestRate) {
         //>0, <100
         if(interestRate <= 0)
@@ -73,6 +95,11 @@ public class Credit{
     public int getInterestPeriod() {
         return interestPeriod;
     }
+    /**
+     * @param interestPeriod
+     * Setzten der Laufzeit, Plausibilitätsprüfung der Eingabewerte und
+     * ggf. Rückgabe einer Fehlermeldung über die errorMessage Methode
+     */
     public void setInterestPeriod(int interestPeriod) {
         if(interestPeriod <= 0)
         {
@@ -91,6 +118,11 @@ public class Credit{
     public String getPaymentRhythm() {
         return paymentRhythm;
     }
+    /**
+     * @param paymentRhythm
+     * Setzten des Zahlungsrhythmus, Plausibilitätsprüfung der Eingabewerte und
+     * ggf. Rückgabe einer Fehlermeldung über die errorMessage Methode
+     */
     public void setPaymentRhythm(String paymentRhythm) {
         // either monatlich or jährlich other ones are not allowed here
         if (paymentRhythm.equals("monatlich") || paymentRhythm.equals("jährlich")){
