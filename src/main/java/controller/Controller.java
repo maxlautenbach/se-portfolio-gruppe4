@@ -81,7 +81,7 @@ public class Controller{
     }
 
     public void createObject(double loanAmount, String periodUoM, double interestRate, int interestPeriod, String repaymentPeriod, Credit.creditTypes creditType){
-        credit.setParameters(loanAmount, interestRate, interestPeriod, repaymentPeriod, creditType);
+        credit.setParameters(loanAmount, periodUoM, interestRate, interestPeriod, repaymentPeriod, creditType);
     }
 
     public void saveObject(){

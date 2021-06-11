@@ -3,14 +3,11 @@ package controller;
 import model.Credit;
 
 public class Calculation {
-
-
     public static double calculateEndAmount(double loanAmount, double interestRate, int interestPeriod, String paymentRhythm, Credit.creditTypes creditType) {
         double interestSum = 0;
         double actInterestRate;
         if(paymentRhythm.equals("monatlich")) {
-            actInterestRate = interestRate /100.0;
-            actInterestRate = actInterestRate/12;
+            actInterestRate = (Math.pow(1 + interestRate / 100.0, 1.0 / 12.0) - 1);
         }
         else {actInterestRate = interestRate / 100.0;}
         switch (creditType) {
@@ -37,7 +34,7 @@ public class Calculation {
         double interestSum = 0;
         double remainingDept = loanAmount;
         for (int i = 0; i<interestPeriod; i++){
-            double interest = remainingDept * interestRate;
+            double interest = loanAmount * interestRate;
             interestSum = interestSum + interest;
             double repayment = annuity - interest;
             remainingDept = remainingDept-repayment;

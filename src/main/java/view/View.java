@@ -81,6 +81,7 @@ public class View extends JFrame {
     public void onCalculateClick() {
         try{
         controller.getCredit().setParameters(Double.parseDouble(amountField.getText()),
+                getSelectedButtonText(periodTimeSelection),
                 Double.parseDouble(interestRateField.getText()),
                 Integer.parseInt(termField.getText()),
                 getSelectedButtonText(periodTimeSelection),
