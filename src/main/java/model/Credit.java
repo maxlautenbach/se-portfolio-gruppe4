@@ -1,39 +1,26 @@
 package model;
 
 import java.util.Locale;
-
-import controller.Controller;
 import view.View;
 
 public class Credit{
     private double loanAmount; // Kreditbetrag
     private double interestRate; //Zinssatz
     private int interestPeriod; // Laufzeit
-    //private int period;
-    private String periodUoM;
     private double repaymentAmount; //zurückzuzahlende Betrag
-    //private String repaymentPeriod;
     private String paymentRhythm; // braucht man meiner Meinung nach gar nicht für die Berechnung
     public enum creditTypes {FÄLLIGKEITSKREDIT, ANNUITÄTENKREDIT, ABZAHLUNGSKREDIT}
     private creditTypes creditType; //Kreditarten
     private double interestSum; //aufaddierten Zinsen
-    private double interest; //Zinsen der Periode
-    private double repayment; //Tilgung
-    private double annuity; //Annuität
-    private double remainingDept; //Restschuld
-    private double actInterestRate;
-    private View view;
 
     public Credit(){
-        Controller control = Controller.getInstance();
-        view = control.getView();
     }
     @Override
     public String toString(){
         try {
             StringBuilder typeName = new StringBuilder(creditType.toString().toLowerCase(Locale.ROOT));
             typeName.replace(0, 1, String.valueOf(typeName.charAt(0)).toUpperCase(Locale.ROOT));
-            return repaymentAmount + "€ - " + typeName;
+            return (Math.round(100d*repaymentAmount)/100d) + "€ - " + typeName;
         } catch (NullPointerException e) {
             return "";
         }
@@ -45,7 +32,6 @@ public class Credit{
         setInterestRate(interestRate);
         setInterestPeriod(interestPeriod);
         setCreditType(creditType);
-
     }
 
     public double getLoanAmount() {
@@ -56,11 +42,11 @@ public class Credit{
         this.loanAmount = loanAmount;
         if(loanAmount <= 0)
         {
-            view.errorMessage("Der Kreditbetrag darf nicht kleiner/gleich null sein. Bitte korrigieren Sie Ihre Eingabe.");
+            View.errorMessage("Der Kreditbetrag darf nicht kleiner/gleich null sein. Bitte korrigieren Sie Ihre Eingabe.");
         }
-        else if(interestRate < 1.7E308)
+        else if(interestRate > Double.MAX_VALUE)
         {
-            view.errorMessage("Der Kreditbetrag ist zu hoch. Bitte korrigieren Sie Ihre Eingabe.");
+            View.errorMessage("Der Kreditbetrag ist zu hoch. Bitte korrigieren Sie Ihre Eingabe.");
         }
         else{
             this.interestRate = interestRate;
@@ -73,11 +59,11 @@ public class Credit{
         //>0, <100
         if(interestRate <= 0)
         {
-            view.errorMessage("Der Zinssatz darf nicht kleiner/gleich null sein. Bitte korrigieren Sie Ihre Eingabe.");
+            View.errorMessage("Der Zinssatz darf nicht kleiner/gleich null sein. Bitte korrigieren Sie Ihre Eingabe.");
         }
         else if(interestRate >= 100)
         {
-            view.errorMessage("Der Zinssatz darf nicht größer/gleich 100 sein. Bitte korrigieren Sie Ihre Eingabe.");
+            View.errorMessage("Der Zinssatz darf nicht größer/gleich 100 sein. Bitte korrigieren Sie Ihre Eingabe.");
         }
         else{
             this.interestRate = interestRate;
@@ -90,7 +76,7 @@ public class Credit{
     public void setInterestPeriod(int interestPeriod) {
         if(interestPeriod <= 0)
         {
-            view.errorMessage("Die Laufzeit darf nicht kleiner/gleich null sein. Bitte korrigieren Sie Ihre Eingabe.");
+            View.errorMessage("Die Laufzeit darf nicht kleiner/gleich null sein. Bitte korrigieren Sie Ihre Eingabe.");
         }
         else{
             this.interestPeriod = interestPeriod;
@@ -110,7 +96,7 @@ public class Credit{
         if (paymentRhythm.equals("monatlich") || paymentRhythm.equals("jährlich")){
             this.paymentRhythm = paymentRhythm;
         }
-        else {view.errorMessage("Bitte wählen Sie erneut den gewünschten Zahlungsrhythmus.");}
+        else {View.errorMessage("Bitte wählen Sie erneut den gewünschten Zahlungsrhythmus.");}
     }
     public model.Credit.creditTypes getCreditType() {
         return creditType;
