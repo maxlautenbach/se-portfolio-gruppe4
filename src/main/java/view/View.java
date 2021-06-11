@@ -6,19 +6,16 @@ import model.Credit;
 import view.listeners.ButtonListener;
 import view.listeners.CreditListListener;
 import view.listeners.RadioButtonListener;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Objects;
 
 
 public class View extends JFrame {
-    private static View instance;
 
+    private static View instance;
     private final Controller controller;
     private JPanel topPanel, centerPanel, bottomPanel;
     private BorderLayout outerLayout;
@@ -38,7 +35,6 @@ public class View extends JFrame {
     private JList<Credit> savedCreditList;
     private JButton saveButton, cancelButton, calculateButton;
 
-
     private View(Controller controller) {
         this.controller = controller;
         initalize();
@@ -53,7 +49,7 @@ public class View extends JFrame {
         return instance;
     }
 
-    public void errorMessage(String errorMessage){
+    public static void errorMessage(String errorMessage){
         JDialog errorDialog = new JDialog();
         errorDialog.setSize(200,100);
         errorDialog.setLocation(400,400);

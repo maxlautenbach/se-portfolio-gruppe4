@@ -10,7 +10,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import view.View;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,7 +1,6 @@
 package view.listeners;
 
 import view.View;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
